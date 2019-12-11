@@ -3,9 +3,18 @@ require 'ostruct'
 class BowlingGame
   MAX_POINTS_PER_TURN = 10
   MAX_TURNS = 10
-  attr_reader :score, :roll_number, :turn, :turn_scores, :spare
+  attr_reader :roll_number, :turn, :turn_scores, :spare
 
   def initialize
+    @rolls = []
+  end
+
+  def roll(points)
+    @rolls << points
+    score
+  end
+
+  def score
     @score = 0
     @roll_number = 0
     @turn = 0
@@ -13,9 +22,13 @@ class BowlingGame
     @spare = false
     @strikes = []
     @bonus_rolls = 0
+    @rolls.each { |roll| score_roll(roll) }
+    @score
   end
 
-  def roll(points)
+  private
+
+  def score_roll(points)
     return 'game over' if @turn == MAX_TURNS
 
     @score += points
@@ -50,8 +63,6 @@ class BowlingGame
       @turn += 1 if @bonus_rolls.zero?
     end
   end
-
-  private
 
   def add_spare_points(points)
     @score += points
