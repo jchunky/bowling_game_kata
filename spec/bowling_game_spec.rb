@@ -1,6 +1,6 @@
-require "spec_helper"
+require 'spec_helper'
 
-require_relative "../lib/bowling_game"
+require_relative '../lib/bowling_game'
 
 RSpec.describe BowlingGame do
   ########################################################
@@ -16,7 +16,7 @@ RSpec.describe BowlingGame do
   # Instructions: Implement a bowling game following the above rules
   # Use practices of: TDD, Arrange-Act-Asset, Red-Green-Refactor
 
-  it "works" do
+  it 'works' do
     expect(score([])).to eq(0)
     expect(score([9])).to eq(9)
     expect(score([1, 2])).to eq(3)
