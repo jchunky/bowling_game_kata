@@ -16,7 +16,7 @@ class BowlingGame
     @score = 0
     @roll_number = 0
     @turn = 0
-    @turn_scores = Array.new(MAX_POINTS_PER_TURN, 0)
+    @turn_scores = Array.new(MAX_TURNS, 0)
     @spare = false
     @strikes = []
     @bonus_rolls = 0
