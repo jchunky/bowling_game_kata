@@ -21,7 +21,9 @@ class BowlingGame
     @strikes = []
     @bonus_rolls = 0
     @rolls.each do |points|
-      break if @turn == MAX_TURNS
+      if @turn == MAX_TURNS
+        break
+      end
 
       @score += points
       @turn_scores[@turn] += points
@@ -31,25 +33,34 @@ class BowlingGame
         @spare = false
       end
 
-      @strikes.each do |strike|
-        if !strike.counted
-          @score += points
-          @turn_scores[strike.turn] += points
-          strike.count += 1
-        end
+      if @strikes.any?
+        @strikes.each do |strike|
+          if !strike.counted
+            @score += points
+            @turn_scores[strike.turn] += points
+            strike.count += 1
+          end
 
-        !strike.counted = true if strike.count == 2
-      end unless @strikes.empty?
+          if strike.count == 2
+            !strike.counted = true
+          end
+        end
+      end
 
       if @bonus_rolls.zero?
         if @turn < 9
-          @strikes << OpenStruct.new(turn: @turn, count: 0, counted: false) if @roll_number.zero? && points == MAX_POINTS_PER_TURN
-          @spare = true if @roll_number == 1 && @turn_scores[@turn] == MAX_POINTS_PER_TURN
-          if points == MAX_POINTS_PER_TURN
-          else
+          if @roll_number.zero? && points == MAX_POINTS_PER_TURN
+            @strikes << OpenStruct.new(turn: @turn, count: 0, counted: false)
+          end
+          if @roll_number == 1 && @turn_scores[@turn] == MAX_POINTS_PER_TURN
+            @spare = true
+          end
+          if points != MAX_POINTS_PER_TURN
             @roll_number = @roll_number.zero? ? 1 : 0
           end
-          @turn += 1 if @roll_number.zero?
+          if @roll_number.zero?
+            @turn += 1
+          end
         elsif points == MAX_POINTS_PER_TURN && @roll_number.zero?
           @bonus_rolls = 2
         elsif @turn_scores[@turn] == MAX_POINTS_PER_TURN && roll_number == 1
@@ -59,7 +70,9 @@ class BowlingGame
         end
       else
         @bonus_rolls -= 1
-        @turn += 1 if @bonus_rolls.zero?
+        if @bonus_rolls.zero?
+          @turn += 1
+        end
       end
     end
 
