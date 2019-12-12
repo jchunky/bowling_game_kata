@@ -20,6 +20,7 @@ class BowlingGame
     @spare = false
     @strikes = []
     @bonus_rolls = 0
+
     @rolls.each do |points|
       if @turn == MAX_TURNS
         break
@@ -33,17 +34,14 @@ class BowlingGame
         @spare = false
       end
 
-      if @strikes.any?
-        @strikes.each do |strike|
-          if !strike.counted
-            @score += points
-            @turn_scores[strike.turn] += points
-            strike.count += 1
-          end
-
-          if strike.count == 2
-            !strike.counted = true
-          end
+      @strikes.each do |strike|
+        if !strike.counted
+          @score += points
+          @turn_scores[strike.turn] += points
+          strike.count += 1
+        end
+        if strike.count == 2
+          strike.counted = true
         end
       end
 
