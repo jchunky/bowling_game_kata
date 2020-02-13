@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-require_relative '../lib/bowling_game'
+require_relative 'bowling_game'
 
 RSpec.describe BowlingGame do
   ########################################################
@@ -18,20 +16,18 @@ RSpec.describe BowlingGame do
 
   it 'works' do
     expect(score([])).to eq(0)
-    expect(score([9])).to eq(9)
-    expect(score([1, 2])).to eq(3)
-    expect(score([10] * 12)).to eq(300)
     expect(score([3])).to eq(3)
-    expect(score([2, 4])).to eq(6)
-    expect(score([1, 2])).to eq(3)
+    expect(score([9])).to eq(9)
     expect(score([10])).to eq(10)
+    expect(score([1, 2])).to eq(3)
+    expect(score([2, 4])).to eq(6)
     expect(score([1, 9])).to be(10)
-    expect(score([1, 9, 1])).to eq(12)
     expect(score([1, 9, 1])).to eq(12)
     expect(score([10, 1, 2])).to eq(16)
     expect(score([10, 10, 1])).to eq(33)
-    expect(score([10] * 10 + [1, 2])).to eq(274)
     expect(score([10] * 9 + [1, 2])).to eq(243)
+    expect(score([10] * 10 + [1, 2])).to eq(274)
+    expect(score([10] * 12)).to eq(300)
   end
 
   def score(rolls)

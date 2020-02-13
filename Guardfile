@@ -11,5 +11,5 @@ watch(/.*/) do |file|
   puts "file: #{file[0]}"
   system "rubocop --auto-correct #{file}"
   puts "\n" + '-' * 80 + "\n"
-  system 'rspec'
+  system 'rspec .'
 end
