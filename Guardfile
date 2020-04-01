@@ -6,10 +6,16 @@ ignore(/.rspec_status/)
 ignore(/Gemfile.lock/)
 ignore(/node_modules/)
 
-watch(/.*/) do |file|
-  puts "\n" + '=' * 80 + "\n"
-  puts "file: #{file[0]}"
-  system "rubocop --auto-correct #{file}"
-  puts "\n" + '-' * 80 + "\n"
-  system 'rspec .'
+def print_line(character)
+  puts "\n" + character * 80 + "\n"
+end
+
+watch(/.*\.rb/) do |match|
+  print_line('=')
+  path = match[0]
+  puts "Processing file: #{path}..."
+  system "rubocop --auto-correct #{path}"
+  print_line('-')
+  system 'bundle exec rspec .'
+  puts 'Done.'
 end
