@@ -18,6 +18,8 @@ class BowlingGame
     frames = [[]]
     rolls.each.with_index do |r, i|
       frames.last << r
+      break if frames.size > 10
+
       factors[i] += 1 if frames.size <= 10
       if frames.last.sum == 10 && frames.last.one?
         factors[i + 1] += 1
