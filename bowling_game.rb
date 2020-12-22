@@ -13,6 +13,8 @@ class BowlingGame
     rolls.zip(factors).sum { |r, f| r * f }
   end
 
+  private
+
   def factors
     result = [0] * 21
     frames = [[]]
@@ -24,13 +26,10 @@ class BowlingGame
       if frames.last.sum == 10 && frames.last.size == 1
         result[i + 1] += 1
         result[i + 2] += 1
-        frames << []
       elsif frames.last.sum == 10
         result[i + 1] += 1
-        frames << []
-      elsif frames.last.size == 2
-        frames << []
       end
+      frames << [] if frames.last.sum == 10 || frames.last.size == 2
     end
     result
   end
