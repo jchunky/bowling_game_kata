@@ -57,6 +57,14 @@ class BowlingGame
   end
 
   def to_s
+    frames.map(&:to_s).join("\n")
+  end
+
+  def score
+    frames.last.total
+  end
+
+  def frames
     result = []
     frame_index = 0
     starting_score = 0
@@ -68,8 +76,8 @@ class BowlingGame
       frame.add_bonus_rolls(rolls.first(1)) if frame.spare?
       frame.add_bonus_rolls(rolls.first(2)) if frame.strike?
       starting_score = frame.total
-      result << frame.to_s
+      result << frame
     end
-    result.join("\n")
+    result
   end
 end
