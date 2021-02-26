@@ -66,15 +66,15 @@ class BowlingGame
 
   def frames
     frame_number = 1
-    starting_score = 0
+    score = 0
     10.times.map do
-      frame = Frame.new(starting_score, frame_number)
+      frame = Frame.new(score, frame_number)
       frame_number += 1
       frame.add_roll(rolls.shift)
       frame.add_roll(rolls.shift) unless frame.complete?
       frame.add_bonus_rolls(rolls.first(1)) if frame.spare?
       frame.add_bonus_rolls(rolls.first(2)) if frame.strike?
-      starting_score = frame.total
+      score = frame.total
       frame
     end
   end
