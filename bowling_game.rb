@@ -1,79 +1,75 @@
-require 'ostruct'
+class Frame
+  attr_reader :frame_index, :rolls, :bonus_rolls, :starting_score
+
+  def initialize(starting_score, frame_index)
+    @starting_score = starting_score
+    @frame_index = frame_index
+    @rolls = []
+    @bonus_rolls = []
+  end
+
+  def add_roll(roll)
+    rolls << roll
+  end
+
+  def add_bonus_rolls(rolls)
+    bonus_rolls.concat(rolls)
+  end
+
+  def complete?
+    rolls.sum == 10 || rolls.size == 2
+  end
+
+  def spare?
+    rolls.sum == 10 && rolls.size == 2
+  end
+
+  def strike?
+    rolls.sum == 10 && rolls.size == 1
+  end
+
+  def to_s
+    "#{frame_index + 1}) [#{rolls_in_frame.join(', ')}] +#{frame_score} =#{total}"
+  end
+
+  def rolls_in_frame
+    if frame_index == 9
+      rolls + bonus_rolls
+    else
+      rolls
+    end
+  end
+
+  def total
+    starting_score + frame_score
+  end
+
+  def frame_score
+    rolls.sum + bonus_rolls.sum
+  end
+end
 
 class BowlingGame
-  MAX_POINTS_PER_TURN = 10
-  MAX_TURNS = 10
+  attr_reader :rolls
 
-  def initialize
-    @rolls = []
+  def initialize(*rolls)
+    @rolls = rolls
   end
 
-  def roll(points)
-    @rolls << points
-  end
-
-  def score
-    @score = 0
-    @roll_number = 0
-    @turn = 0
-    @turn_scores = Array.new(MAX_TURNS, 0)
-    @spare = false
-    @strikes = []
-    @bonus_rolls = 0
-
-    @rolls.each do |points|
-      if @turn == MAX_TURNS
-        break
-      end
-
-      @score += points
-      @turn_scores[@turn] += points
-      if @spare
-        @score += points
-        @turn_scores[(@turn - 1)] += points
-        @spare = false
-      end
-
-      @strikes.each do |strike|
-        if !strike.counted
-          @score += points
-          @turn_scores[strike.turn] += points
-          strike.count += 1
-        end
-        if strike.count == 2
-          strike.counted = true
-        end
-      end
-
-      if @bonus_rolls.zero?
-        if @turn < 9
-          if @roll_number.zero? && points == MAX_POINTS_PER_TURN
-            @strikes << OpenStruct.new(turn: @turn, count: 0, counted: false)
-          end
-          if @roll_number == 1 && @turn_scores[@turn] == MAX_POINTS_PER_TURN
-            @spare = true
-          end
-          if points != MAX_POINTS_PER_TURN
-            @roll_number = @roll_number.zero? ? 1 : 0
-          end
-          if @roll_number.zero?
-            @turn += 1
-          end
-        elsif points == MAX_POINTS_PER_TURN && @roll_number.zero?
-          @bonus_rolls = 2
-        elsif @turn_scores[@turn] == MAX_POINTS_PER_TURN && roll_number == 1
-          @bonus_rolls = 1
-        else
-          @turn += 1
-        end
-      else
-        @bonus_rolls -= 1
-        if @bonus_rolls.zero?
-          @turn += 1
-        end
-      end
+  def to_s
+    result = []
+    frame_index = 0
+    starting_score = 0
+    10.times do
+      frame = Frame.new(starting_score, frame_index)
+      frame_index += 1
+      frame.add_roll(rolls.shift)
+      frame.add_roll(rolls.shift) unless frame.complete?
+      frame.add_bonus_rolls(rolls.first(1)) if frame.spare?
+      frame.add_bonus_rolls(rolls.first(2)) if frame.strike?
+      starting_score = frame.total
+      result << frame.to_s
     end
-
-    @score
+    result.join("\n")
   end
 end
