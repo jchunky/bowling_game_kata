@@ -1,9 +1,9 @@
 class Frame
-  attr_reader :frame_index, :rolls, :bonus_rolls, :starting_score
+  attr_reader :frame_number, :rolls, :bonus_rolls, :starting_score
 
-  def initialize(starting_score, frame_index)
+  def initialize(starting_score, frame_number)
     @starting_score = starting_score
-    @frame_index = frame_index
+    @frame_number = frame_number
     @rolls = []
     @bonus_rolls = []
   end
@@ -29,11 +29,11 @@ class Frame
   end
 
   def to_s
-    "#{frame_index + 1}) [#{rolls_in_frame.join(', ')}] +#{frame_score} =#{total}"
+    "#{frame_number}) [#{rolls_in_frame.join(', ')}] +#{frame_score} =#{total}"
   end
 
   def rolls_in_frame
-    if frame_index == 9
+    if frame_number == 10
       rolls + bonus_rolls
     else
       rolls
@@ -65,11 +65,11 @@ class BowlingGame
   end
 
   def frames
-    frame_index = 0
+    frame_number = 1
     starting_score = 0
     10.times.map do
-      frame = Frame.new(starting_score, frame_index)
-      frame_index += 1
+      frame = Frame.new(starting_score, frame_number)
+      frame_number += 1
       frame.add_roll(rolls.shift)
       frame.add_roll(rolls.shift) unless frame.complete?
       frame.add_bonus_rolls(rolls.first(1)) if frame.spare?
