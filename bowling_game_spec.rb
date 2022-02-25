@@ -15,19 +15,39 @@ RSpec.describe BowlingGame do
   # Use practices of: TDD, Arrange-Act-Asset, Red-Green-Refactor
 
   it 'works' do
-    expect(score([])).to eq(0)
-    expect(score([3])).to eq(3)
-    expect(score([9])).to eq(9)
-    expect(score([10])).to eq(10)
-    expect(score([1, 2])).to eq(3)
-    expect(score([2, 4])).to eq(6)
-    expect(score([1, 9])).to be(10)
-    expect(score([1, 9, 1])).to eq(12)
-    expect(score([10, 1, 2])).to eq(16)
-    expect(score([10, 10, 1])).to eq(33)
-    expect(score([10] * 9 + [1, 2])).to eq(243)
-    expect(score([10] * 10 + [1, 2])).to eq(274)
-    expect(score([10] * 12)).to eq(300)
+    # expect(score([])).to eq(0)
+    # expect(score([3])).to eq(3)
+    # expect(score([9])).to eq(9)
+    # expect(score([10])).to eq(10)
+    # expect(score([1, 2])).to eq(3)
+    # expect(score([2, 4])).to eq(6)
+    # expect(score([1, 9])).to be(10)
+    # expect(score([1, 9, 1])).to eq(12)
+    # expect(score([10, 1, 2])).to eq(16)
+    # expect(score([10, 10, 1])).to eq(33)
+    # expect(score([10] * 9 + [1, 2])).to eq(243)
+    # expect(score([10] * 10 + [1, 2])).to eq(274)
+    # expect(score([10] * 12)).to eq(300)
+
+    description = <<~GAME
+      Frame 1: X, 20
+      Frame 2: 8/, 39
+      Frame 3: 9/, 57
+      Frame 4: 6-, 65
+      Frame 5: X, 94
+      Frame 6: X, 114
+      Frame 7: 9/, 133
+      Frame 8: 9/, 153
+      Frame 9: X, 182
+      Frame 10: X9/, 202
+    GAME
+    rolls = [10, 8, 2, 9, 1, 6, 0, 10, 10, 9, 1, 9, 1, 10, 10, 9, 1]
+    game = BowlingGame.new
+
+    rolls.each { |points| game.roll(points) }
+
+    expect(game.description).to eq(description)
+    expect(game.score).to eq(202)
   end
 
   def score(rolls)
