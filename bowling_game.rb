@@ -1,6 +1,12 @@
 class Frame < Struct.new(:number, :rolls, :subsequent_rolls, :previous_total_score)
   def to_s
-    "Frame #{number}: #{rolls.join(", ")} - Frame Score: #{score} - Total Score: #{total_score}"
+    format(
+      "%8s: %-3s    Frame Score: %2s    Total Score: %3s",
+      "Frame #{number}",
+      rolls.map.with_index(&method(:format_roll)).join,
+      score,
+      total_score
+    )
   end
 
   def score
@@ -11,6 +17,15 @@ class Frame < Struct.new(:number, :rolls, :subsequent_rolls, :previous_total_sco
   end
 
   private
+
+  def format_roll(roll, index)
+    return "X" if roll == 10
+    return "-" if roll == 0
+    return "/" if index == 1 && rolls.sum == 10 && number != 10
+    return "/" if index == 2 && rolls[1..2].sum == 10 && number == 10
+
+    roll
+  end
 
   def total_score
     score + previous_total_score
