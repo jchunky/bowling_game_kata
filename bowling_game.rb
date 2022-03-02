@@ -70,7 +70,7 @@ class BowlingGame
       while tmp_rolls.any?
         rolls = []
         rolls << tmp_rolls.shift
-        rolls << tmp_rolls.shift unless rolls.sum == 10 || tmp_rolls.none?
+        rolls << tmp_rolls.shift if rolls.sum != 10 && tmp_rolls.any?
         rolls << tmp_rolls.shift while tmp_rolls.any? if frame_number == 10
         subsequent_rolls = tmp_rolls.dup
         current_frame = Frame.new(frame_number, rolls, subsequent_rolls, current_total_score)
