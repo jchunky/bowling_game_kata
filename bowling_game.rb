@@ -1,8 +1,8 @@
 class Frame < Struct.new(:number, :rolls, :subsequent_rolls, :previous_total_score)
   def to_s
     format(
-      "%8s: %-3s    Frame Score: %2s    Total Score: %3s",
-      "Frame #{number}",
+      "Frame %02i: %-3s    Frame Score: %2i    Total Score: %3i",
+      number,
       rolls.map.with_index(&method(:format_roll)).join,
       score,
       total_score

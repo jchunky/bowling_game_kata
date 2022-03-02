@@ -17,15 +17,15 @@ RSpec.describe BowlingGame do
     expect(score([10] * 12)).to eq(300)
 
     description = <<~GAME
-       Frame 1: X      Frame Score: 20    Total Score:  20
-       Frame 2: 8/     Frame Score: 19    Total Score:  39
-       Frame 3: 9/     Frame Score: 18    Total Score:  57
-       Frame 4: 8-     Frame Score:  8    Total Score:  65
-       Frame 5: X      Frame Score: 29    Total Score:  94
-       Frame 6: X      Frame Score: 20    Total Score: 114
-       Frame 7: 9/     Frame Score: 19    Total Score: 133
-       Frame 8: 9/     Frame Score: 20    Total Score: 153
-       Frame 9: X      Frame Score: 29    Total Score: 182
+      Frame 01: X      Frame Score: 20    Total Score:  20
+      Frame 02: 8/     Frame Score: 19    Total Score:  39
+      Frame 03: 9/     Frame Score: 18    Total Score:  57
+      Frame 04: 8-     Frame Score:  8    Total Score:  65
+      Frame 05: X      Frame Score: 29    Total Score:  94
+      Frame 06: X      Frame Score: 20    Total Score: 114
+      Frame 07: 9/     Frame Score: 19    Total Score: 133
+      Frame 08: 9/     Frame Score: 20    Total Score: 153
+      Frame 09: X      Frame Score: 29    Total Score: 182
       Frame 10: X9/    Frame Score: 20    Total Score: 202
     GAME
     rolls = [10, 8, 2, 9, 1, 8, 0, 10, 10, 9, 1, 9, 1, 10, 10, 9, 1]
