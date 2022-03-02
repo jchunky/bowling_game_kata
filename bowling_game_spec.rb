@@ -1,52 +1,39 @@
 require_relative 'bowling_game'
 
 RSpec.describe BowlingGame do
-  ########################################################
-  # Rules of the bowling kata:
-  # - 10 turns allowed per game.
-  # - 2 rolls allowed per turn.
-  # - If bowler fails to knock 10 between 2 rolls, score for that turn is sum of its rolls rolls.
-  # - Spare: bowler knocks down 10 on roll #2. Score is 10 + next roll score.
-  # - Strike: bowler knocks down 10 on roll #1. Score is 10 + next 2 throw scores.
-  # - Spare or strike on last turn (turn 10), gets 1 or 2 bonus rolls respectively. These bonus rolls count toward the 10th turn.
-  ########################################################
-  #
-  # Instructions: Implement a bowling game following the above rules
-  # Use practices of: TDD, Arrange-Act-Asset, Red-Green-Refactor
-
   it 'works' do
-    # expect(score([])).to eq(0)
-    # expect(score([3])).to eq(3)
-    # expect(score([9])).to eq(9)
-    # expect(score([10])).to eq(10)
-    # expect(score([1, 2])).to eq(3)
-    # expect(score([2, 4])).to eq(6)
-    # expect(score([1, 9])).to be(10)
-    # expect(score([1, 9, 1])).to eq(12)
-    # expect(score([10, 1, 2])).to eq(16)
-    # expect(score([10, 10, 1])).to eq(33)
-    # expect(score([10] * 9 + [1, 2])).to eq(243)
-    # expect(score([10] * 10 + [1, 2])).to eq(274)
-    # expect(score([10] * 12)).to eq(300)
+    expect(score([])).to eq(0)
+    expect(score([3])).to eq(3)
+    expect(score([9])).to eq(9)
+    expect(score([10])).to eq(10)
+    expect(score([1, 2])).to eq(3)
+    expect(score([2, 4])).to eq(6)
+    expect(score([1, 9])).to be(10)
+    expect(score([1, 9, 1])).to eq(12)
+    expect(score([10, 1, 2])).to eq(16)
+    expect(score([10, 10, 1])).to eq(33)
+    expect(score([10] * 9 + [1, 2])).to eq(247)
+    expect(score([10] * 10 + [1, 2])).to eq(274)
+    expect(score([10] * 12)).to eq(300)
 
     description = <<~GAME
-      Frame 1: X, 20
-      Frame 2: 8/, 39
-      Frame 3: 9/, 57
-      Frame 4: 6-, 65
-      Frame 5: X, 94
-      Frame 6: X, 114
-      Frame 7: 9/, 133
-      Frame 8: 9/, 153
-      Frame 9: X, 182
-      Frame 10: X9/, 202
+      Frame 1: 10 - Frame Score: 20 - Total Score: 20
+      Frame 2: 8, 2 - Frame Score: 19 - Total Score: 39
+      Frame 3: 9, 1 - Frame Score: 18 - Total Score: 57
+      Frame 4: 8, 0 - Frame Score: 8 - Total Score: 65
+      Frame 5: 10 - Frame Score: 29 - Total Score: 94
+      Frame 6: 10 - Frame Score: 20 - Total Score: 114
+      Frame 7: 9, 1 - Frame Score: 19 - Total Score: 133
+      Frame 8: 9, 1 - Frame Score: 20 - Total Score: 153
+      Frame 9: 10 - Frame Score: 29 - Total Score: 182
+      Frame 10: 10, 9, 1 - Frame Score: 20 - Total Score: 202
     GAME
-    rolls = [10, 8, 2, 9, 1, 6, 0, 10, 10, 9, 1, 9, 1, 10, 10, 9, 1]
+    rolls = [10, 8, 2, 9, 1, 8, 0, 10, 10, 9, 1, 9, 1, 10, 10, 9, 1]
     game = BowlingGame.new
 
     rolls.each { |points| game.roll(points) }
 
-    expect(game.description).to eq(description)
+    expect(game.description.strip).to eq(description.strip)
     expect(game.score).to eq(202)
   end
 
